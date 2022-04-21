@@ -6,27 +6,42 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
 
-onready var default_speed = $Player.speed 
+var chars = [Dash, Vdash, Wall, Grapple, Pogo]
+var selchar = 0
+
+func add_chars(cls):
+	Globals.characters = []
+	for _i in range(4):
+		Globals.characters.append(cls)
+	$Player.setup()
 
 func _ready():
-	Globals.characters = [
-		Dash,
-		Dash,
-		Dash,
-		Dash
-	]
+	$Player.DEBUG_SQUISH = false
 	Globals.selected = 3
-	$Player.setup()
+	add_chars(Dash)
 
 func _process(delta):
 	if Input.is_action_just_pressed(\"char1\"):
-		$Player.speed = default_speed/4
+		$Player.speed = $Player.speed_default/4
 	elif Input.is_action_just_pressed(\"char2\"):
-		$Player.speed = default_speed/2
+		$Player.speed = $Player.speed_default/2
 	elif Input.is_action_just_pressed(\"char3\"):
-		$Player.speed = default_speed/4*3
+		$Player.speed = $Player.speed_default/4*3
 	elif Input.is_action_just_pressed(\"char4\"):
-		$Player.speed = default_speed
+		$Player.speed = $Player.speed_default
+	if Input.is_action_just_pressed(\"ui_accept\"):
+		$Player.speed_default = $Player.speed
+	var olsel = selchar
+	if Input.is_action_just_pressed(\"ui_right\"):
+		selchar += 1
+	elif Input.is_action_just_pressed(\"ui_left\"):
+		selchar -= 1
+	if olsel != selchar:
+		if selchar >= len(chars):
+			selchar = len(chars) - 1
+		elif selchar < 0:
+			selchar = 0
+		add_chars(chars[selchar])
 	var modNum = 100
 	if Input.is_key_pressed(KEY_CONTROL):
 		modNum *= 10
@@ -34,8 +49,8 @@ func _process(delta):
 		$Player.speed += round(modNum*delta)
 	elif Input.is_action_pressed(\"ui_down\"):
 		$Player.speed -= round(modNum*delta)
-	$Player/RichTextLabel.text = \"speed: \" + str($Player.speed)
-	if Input.is_action_just_pressed(\"ui_right\"):
+	$Player/RichTextLabel.text = \"Speed: \" + str($Player.speed)
+	if Input.is_action_just_pressed(\"ui_focus_next\"):
 		if Input.is_action_pressed(\"right\"):
 			Input.action_release(\"right\")
 		else:
@@ -62,11 +77,11 @@ script = SubResource( 1 )
 [node name="Player" parent="." index="1"]
 position = Vector2( -119, 13 )
 
-[node name="Camera2D" type="Camera2D" parent="Player" index="9"]
+[node name="Camera2D" type="Camera2D" parent="Player" index="7"]
 current = true
 zoom = Vector2( 0.1, 0.1 )
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Player" index="10"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Player" index="8"]
 margin_left = -18.0
 margin_top = -31.0
 margin_right = 234.0

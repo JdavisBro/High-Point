@@ -30,11 +30,8 @@ func passive(delta):
 			player.jumping = false
 			if player.gravityMult > 0.2:
 				player.gravityMult = 0.2
-			if player.jumping:
-				player.jump_buffer = 0
-			wall_buffer = Player.BUFFER_DEFAULT
-			print(player.get_slide_collision(0).normal.x < 0)
-			buffer_left = player.get_slide_collision(0).normal.x < 0
+		wall_buffer = Player.BUFFER_DEFAULT
+		buffer_left = player.get_slide_collision(0).normal.x < 0
 	elif player.gravityMult == 0.2:
 		player.gravityMult = 1.0
 	if wall_buffer and not player.jumping:

@@ -4,7 +4,9 @@ class_name Player
 
 # To Dos/Ideas
 #
-#
+# FOR CONTROLLER either:
+# assign a button to each skill and pressing that button switches and activates the skill
+# allow the user to set an order and they press a button to go through that order
 
 # Physics
 var acceleration = 200 # per sec
@@ -31,6 +33,7 @@ var movementEnabled = true
 
 var victimer = 0
 var rng = RandomNumberGenerator.new()
+var DEBUG_SQUISH = true
 
 # Skills
 var skill = null
@@ -248,7 +251,7 @@ func debug(_delta):
 		dir ^= SQUASH_DOWN
 	else:
 		y = 1
-	if dir and not tween.is_active():
+	if dir and not tween.is_active() and DEBUG_SQUISH:
 		squash(x, y, 0.05, 0.3, dir)
 
 	if Input.is_action_just_pressed("DEBUG_toggle_inf_charge"):
@@ -295,7 +298,7 @@ func move():
 		slid = false
 	else:
 		velocity = move_and_slide(velocity,Vector2.UP)
-		if not activeSkill or ("allow_anims" in activeSkill and activeSkill.allow_anims):
+		if not activeSkill:
 			if velocity.x != 0 and sprite.animation == "idle":
 				sprite.play("walk")
 			elif sprite.animation == "walk":

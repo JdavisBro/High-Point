@@ -11,7 +11,6 @@ var skill = "vdash"
 
 var timer = 0.0
 var slow_gravity = null
-var allow_anims = false
 
 func _init(plr):
 	player = plr

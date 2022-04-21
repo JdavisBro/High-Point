@@ -15,6 +15,10 @@ var orders = {
 }
 
 func setup():
+	for i in powers:
+		for n in i.get_children():
+			if n.name != "emblem":
+				n.queue_free()
 	visible = true
 	for i in range(4):
 		powers.append(get_node("powerbg" + str(i+1)))
