@@ -1,11 +1,11 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://objects/Player.tscn" type="PackedScene" id=1]
-[ext_resource path="res://objects/Ground.tscn" type="PackedScene" id=2]
+[ext_resource path="res://objects/Player/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://objects/TileMaps/Ground.tscn" type="PackedScene" id=2]
 [ext_resource path="res://objects/VictoryFlag.tscn" type="PackedScene" id=3]
-[ext_resource path="res://objects/Wood.tscn" type="PackedScene" id=4]
-[ext_resource path="res://objects/Deco.tscn" type="PackedScene" id=5]
-[ext_resource path="res://objects/Obstacles.tscn" type="PackedScene" id=6]
+[ext_resource path="res://objects/TileMaps/Wood.tscn" type="PackedScene" id=4]
+[ext_resource path="res://objects/TileMaps/Deco.tscn" type="PackedScene" id=5]
+[ext_resource path="res://objects/TileMaps/Obstacles.tscn" type="PackedScene" id=6]
 [ext_resource path="res://default_theme.tres" type="Theme" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -48,3 +48,4 @@ __meta__ = {
 
 [node name="VictoryFlag" parent="." instance=ExtResource( 3 )]
 position = Vector2( 121, -72 )
+frame = 2

@@ -44,7 +44,7 @@ onready var powers = $UI/PowersContainer
 onready var tween: Tween = $Tween
 onready var trail: Particles2D = $TrailEffect
 
-var skilleffect = preload("res://objects/SkillEffect.tscn")
+var skilleffect = preload("res://objects/Player/SkillEffect.tscn")
 
 # Buffers
 const BUFFER_DEFAULT = 0.1 # seconds

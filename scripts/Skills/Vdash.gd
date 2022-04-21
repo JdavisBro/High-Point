@@ -33,6 +33,12 @@ func do(delta):
 		player.skill_end()
 
 func use(_delta):
+	var windpos = player.position - Vector2(0, 15)
+	var anim = player.skill_animation("vdashWindBack", windpos, false, Vector2.ZERO, 0, true)
+	anim.modulate.a = 0.3
+	anim = player.skill_animation("vdashWindFront", windpos)
+	anim.modulate.a = 0.3
+
 	player.squash(0.8,1.4,0.1)
 	player.movementEnabled = false
 	timer = 0.3

@@ -2,9 +2,9 @@
 
 [ext_resource path="res://images/players/vdash.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://scripts/Player.gd" type="Script" id=2]
-[ext_resource path="res://objects/UI.tscn" type="PackedScene" id=3]
+[ext_resource path="res://objects/Player/UI.tscn" type="PackedScene" id=3]
 [ext_resource path="res://images/players/vent/idle0.png" type="Texture" id=4]
-[ext_resource path="res://objects/PixelLine.tscn" type="PackedScene" id=12]
+[ext_resource path="res://objects/Player/PixelLine.tscn" type="PackedScene" id=12]
 
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 5.5, 9.5 )
