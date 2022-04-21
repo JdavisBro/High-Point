@@ -7,9 +7,6 @@ on:
 jobs:
   Godot:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        platform: [Linux64, Win64, Mac]
     steps:
       - uses: actions/checkout@v2
         with:
