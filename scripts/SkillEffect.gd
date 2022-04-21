@@ -15,13 +15,13 @@ func animation_finished():
 func behind():
 	get_parent().move_child(self, 0)
 
-func follow_player(x=true, y=true):
-	if x and y:
+func follow_player(x=1, y=1):
+	if int(x) == 1 and int(y) == 1:
 		get_parent().remove_child(self)
 		player.add_child(self)
 	else:
-		follow.x = int(x)
-		follow.y = int(y)
+		follow.x = float(x)
+		follow.y = float(y)
 
 func _process(delta):
 	if start_after:
@@ -34,6 +34,6 @@ func _process(delta):
 	position += velocity*delta
 	rotate(deg2rad(rotate_speed*delta))
 	if follow.x:
-		global_position.x = player.global_position.x
+		position.x += (player.global_position.x-position.x)*follow.x
 	elif follow.y:
-		global_position.y = player.global_position.y
+		position.y += (player.global_position.y-position.y)*follow.y

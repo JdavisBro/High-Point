@@ -32,6 +32,8 @@ func do(delta):
 		player.activeSkill = null
 		player.skill_end()
 		yield(player.get_tree().create_timer(0.4), "timeout")
+		if not is_instance_valid(player):
+			return
 		player.speed = player.speed_default
 		player.gravityMult = 1.0
 

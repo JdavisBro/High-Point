@@ -83,8 +83,6 @@ func _animation_finished():
 func _physics_process(delta):
 	frames += 1
 	
-	print(gravityMult)
-
 	rng.randomize()
 	
 	check_buffers(delta)
