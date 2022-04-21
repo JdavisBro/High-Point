@@ -1,0 +1,50 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://objects/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://objects/Ground.tscn" type="PackedScene" id=2]
+[ext_resource path="res://objects/VictoryFlag.tscn" type="PackedScene" id=3]
+[ext_resource path="res://objects/Wood.tscn" type="PackedScene" id=4]
+[ext_resource path="res://objects/Deco.tscn" type="PackedScene" id=5]
+[ext_resource path="res://objects/Obstacles.tscn" type="PackedScene" id=6]
+[ext_resource path="res://default_theme.tres" type="Theme" id=7]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 160, 9 )
+
+[node name="LevelDefault" type="Node2D"]
+
+[node name="Deco" parent="." instance=ExtResource( 5 )]
+modulate = Color( 1, 1, 1, 0.54902 )
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( -132, -78 )
+
+[node name="Obstacles" parent="." instance=ExtResource( 6 )]
+
+[node name="Grass" parent="." instance=ExtResource( 2 )]
+
+[node name="Wood" parent="." instance=ExtResource( 4 )]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.31, 0.31 )
+
+[node name="KillPlanes" type="StaticBody2D" parent="."]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KillPlanes"]
+position = Vector2( 0, 107 )
+shape = SubResource( 1 )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+margin_left = -158.0
+margin_top = 36.0
+margin_right = 122.0
+margin_bottom = 81.0
+theme = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VictoryFlag" parent="." instance=ExtResource( 3 )]
+position = Vector2( 121, -72 )

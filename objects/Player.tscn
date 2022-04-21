@@ -1,0 +1,78 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://images/players/vdash.tres" type="SpriteFrames" id=1]
+[ext_resource path="res://scripts/Player.gd" type="Script" id=2]
+[ext_resource path="res://objects/UI.tscn" type="PackedScene" id=3]
+[ext_resource path="res://images/players/vent/idle0.png" type="Texture" id=4]
+[ext_resource path="res://objects/PixelLine.tscn" type="PackedScene" id=12]
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 5.5, 9.5 )
+
+[sub_resource type="Gradient" id=7]
+offsets = PoolRealArray( 0, 0.5, 1 )
+colors = PoolColorArray( 1, 1, 1, 0.470588, 0.969626, 0.814615, 1, 0.383656, 0.917439, 0.496094, 1, 0.145098 )
+
+[sub_resource type="GradientTexture" id=8]
+gradient = SubResource( 7 )
+
+[sub_resource type="ParticlesMaterial" id=9]
+direction = Vector3( 0, 0, 0 )
+gravity = Vector3( 0, 0, 0 )
+color = Color( 1, 1, 1, 0.117647 )
+color_ramp = SubResource( 8 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 12, 12 )
+
+[node name="Player" type="KinematicBody2D"]
+collision_mask = 2
+script = ExtResource( 2 )
+
+[node name="UI" parent="." instance=ExtResource( 3 )]
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0, -1 )
+scale = Vector2( 1.07896, 1 )
+frames = ExtResource( 1 )
+animation = "idle"
+playing = true
+
+[node name="CollisionBox" type="CollisionShape2D" parent="."]
+position = Vector2( -0.5, 0.5 )
+shape = SubResource( 3 )
+
+[node name="TrailEffect" type="Particles2D" parent="."]
+show_behind_parent = true
+emitting = false
+amount = 30
+lifetime = 0.2
+speed_scale = 3.0
+local_coords = false
+draw_order = 1
+process_material = SubResource( 9 )
+texture = ExtResource( 4 )
+
+[node name="Grapple" type="Node2D" parent="."]
+position = Vector2( 0, 1 )
+
+[node name="Raycast" type="RayCast2D" parent="Grapple"]
+position = Vector2( 6, -10 )
+cast_to = Vector2( 25, -60 )
+collision_mask = 42
+
+[node name="Line" parent="Grapple" instance=ExtResource( 12 )]
+
+[node name="Pogo" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+monitoring = false
+monitorable = false
+
+[node name="CollisionBox" type="CollisionShape2D" parent="Pogo"]
+position = Vector2( 0, 13 )
+shape = SubResource( 4 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[connection signal="animation_finished" from="AnimatedSprite" to="." method="_animation_finished"]
