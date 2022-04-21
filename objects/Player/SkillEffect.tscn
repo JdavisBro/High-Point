@@ -67,6 +67,7 @@ animations = [ {
 [node name="AnimatedSprite" type="AnimatedSprite"]
 frames = SubResource( 1 )
 animation = "wind"
+frame = 1
 playing = true
 script = ExtResource( 12 )
 

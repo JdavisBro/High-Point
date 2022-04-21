@@ -48,3 +48,4 @@ __meta__ = {
 
 [node name="VictoryFlag" parent="." instance=ExtResource( 3 )]
 position = Vector2( 121, -72 )
+frame = 2

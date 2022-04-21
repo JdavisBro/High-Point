@@ -3,7 +3,7 @@
 [ext_resource path="res://images/spike.png" type="Texture" id=1]
 
 [sub_resource type="ConvexPolygonShape2D" id=18]
-points = PoolVector2Array( 0, 8, 0, 8, 3.03518, 0.925751, 4.87416, 0.979836, 8, 8 )
+points = PoolVector2Array( 4.95421, 0.923584, 7.52446, 8.9459, 0.436794, 8.9459, 3.08493, 1.07936 )
 
 [sub_resource type="TileSet" id=17]
 0/name = "Spike"
