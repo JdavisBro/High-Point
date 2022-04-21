@@ -9,8 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        name: [fmp2.x86_64, fmp2.exe, fmp2.zip]
-        platform: [Linux64, Win64, Mac]
+        include:
+          - name: "fmp2.x86_64"
+            platform: "Linux64"
+          - name: "fmp2.exe"
+            platform: "Win64"
+          - name: "fmp2.zip"
+            platform: "Mac"
+
     steps:
       - uses: actions/checkout@v2
         with:
@@ -19,7 +25,7 @@ jobs:
         id: build
         uses: josephbmanley/build-godot-action@v1.4.1
         with:
-          name: ${{ matrix.name}}
+          name: ${{ matrix.name }}
           preset: ${{ matrix.platform }}
           debugMode: "false"
       - name: Upload Artifact
