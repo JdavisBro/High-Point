@@ -120,6 +120,7 @@ func use(_delta):
 		just_started = true
 		player.movementEnabled = false
 		player.velocity.y = 0
+		player.pogoing = false
 		line.visible = true
 		sprite.play("grapple")
 		return true

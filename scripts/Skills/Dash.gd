@@ -47,6 +47,7 @@ func use(_delta):
 			var pos = player.global_position + Vector2(xoffset+player.rng.randi_range(-5,5),yoffset+player.rng.randi_range(-5,5))
 			var anim = player.skill_animation("wind", pos)
 			anim.modulate.a = 0.5
+			anim.behind()
 			anim.start_after = float(abs(xoffset)) / 160 + player.rng.randf_range(-0.02,0.02)
 
 	player.squash(1.6,0.6)

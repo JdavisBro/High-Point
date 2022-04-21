@@ -10,7 +10,6 @@ var name = "Vent"
 var skill = "vdash"
 
 var timer = 0.0
-var slow_gravity = null
 
 func _init(plr):
 	player = plr
@@ -40,15 +39,16 @@ func use(_delta):
 	var anim = player.skill_animation("vdashWindBack", Vector2(0, 5))
 	anim.modulate.a = 0.5
 	anim.follow_player()
+	anim.behind()
 	anim = player.skill_animation("vdashWindFront", Vector2(0, 5))
 	anim.modulate.a = 0.5
-	anim.behind()
 	anim.follow_player()
 	
 	for xoffset in [-10,10,0]:
 		for yoffset in [0,-15,-30]:
 			var pos = player.global_position + Vector2(xoffset+player.rng.randi_range(-5,5),yoffset+player.rng.randi_range(-5,5))
 			anim = player.skill_animation("wind", pos)
+			anim.behind()
 			anim.rotate(deg2rad(270))
 			anim.modulate.a = 0.5
 			anim.start_after = float(abs(yoffset)) / 160 + player.rng.randf_range(0,0.05)
