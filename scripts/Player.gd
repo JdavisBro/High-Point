@@ -12,8 +12,10 @@ var gravity = 1500 # per sec
 var gravityMult = 1.0
 var friction = 600 # per sec
 var airRes = 150 # per sec
-var speed = 125 # cap
+var speed_default = 125
+var speed = speed_default # cap
 var jump_impulse = 200
+
 
 var velocity = Vector2()
 
@@ -81,9 +83,9 @@ func _animation_finished():
 func _physics_process(delta):
 	frames += 1
 	
+	print(gravityMult)
+
 	rng.randomize()
-	
-	gravityMult = 1.0
 	
 	check_buffers(delta)
 	
@@ -217,6 +219,8 @@ func use_skill(delta):
 		use_charge = skill.use(delta)
 
 	if use_charge:
+		gravityMult = 1.0 # Make sure Vdash's low gravity doesn't effect other skills
+		speed = speed_default
 		if skill.has_method("do"):
 			activeSkill = skill
 		skill_buffer = 0
@@ -268,9 +272,9 @@ func do_gravity(delta):
 			peak = position.y
 		if jumping and velocity.y > -300 and velocity.y < 150: # Peak of jump
 			if Input.is_action_pressed("jump") or pogoing:
-				velocity.y += gravity/2*delta
+				velocity.y += gravity/2*gravityMult*delta
 			else:
-				velocity.y += gravity*delta
+				velocity.y += gravity*gravityMult*delta
 		else:
 			velocity.y += gravity*gravityMult*delta
 
@@ -293,7 +297,7 @@ func move():
 		slid = false
 	else:
 		velocity = move_and_slide(velocity,Vector2.UP)
-		if not activeSkill:
+		if not activeSkill or ("allow_anims" in activeSkill and activeSkill.allow_anims):
 			if velocity.x != 0 and sprite.animation == "idle":
 				sprite.play("walk")
 			elif sprite.animation == "walk":
@@ -350,26 +354,22 @@ func update_asset(asset, effects=[]):
 func make_smoke(pos, deg):
 	pos += Vector2(rng.randf_range(-15,15),rng.randf_range(-15,15))
 	deg += rng.randf_range(-10,10)
-	return skill_animation("smoke", position, false, pos, deg, true)
+	var anim = skill_animation("smoke", position)
+	anim.velocity = pos
+	anim.rotate_speed = deg
+	anim.behind()
+	return anim
 
 func skill_end():
 	update_asset(skill.asset, skill.effects)
 
-func skill_animation(anima, loca, follow=false, vel=Vector2.ZERO, rot=0, behind=false):
+func skill_animation(anima, loca):
 	var anim = skilleffect.instance()
+	anim.player = self
 	anim.play(anima)
 	anim.position = loca
-	anim.vel = vel
-	anim.rot = rot
-	if follow:
-		anim.show_behind_parent = behind
-		add_child(anim)
-	else:
-		if behind:
-			get_owner().add_child(anim)
-			get_owner().move_child(anim,0)
-		else:
-			get_owner().add_child(anim)
+	get_parent().add_child(anim)
+	anim.get_parent()
 	return anim
 
 func squash(tox,toy,into=0,outof=0.3,align=SQUASH_CENTER):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://images/slash/5.png" type="Texture" id=1]
 [ext_resource path="res://images/slash/4.png" type="Texture" id=2]
@@ -26,6 +26,10 @@
 [ext_resource path="res://images/wind/vdash/behind3.png" type="Texture" id=24]
 [ext_resource path="res://images/wind/vdash/behind1.png" type="Texture" id=25]
 [ext_resource path="res://images/wind/vdash/behind4.png" type="Texture" id=26]
+[ext_resource path="res://images/wind/0.png" type="Texture" id=27]
+[ext_resource path="res://images/wind/1.png" type="Texture" id=28]
+[ext_resource path="res://images/wind/2.png" type="Texture" id=29]
+[ext_resource path="res://images/wind/3.png" type="Texture" id=30]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -44,21 +48,26 @@ animations = [ {
 "name": "smoke",
 "speed": 12.0
 }, {
-"frames": [ ExtResource( 18 ), ExtResource( 15 ), ExtResource( 13 ), ExtResource( 16 ), ExtResource( 14 ), ExtResource( 17 ), ExtResource( 19 ) ],
+"frames": [ ExtResource( 18 ), ExtResource( 15 ), ExtResource( 13 ), ExtResource( 16 ), ExtResource( 14 ), ExtResource( 17 ), ExtResource( 19 ), null ],
 "loop": true,
 "name": "vdashWindFront",
-"speed": 35.0
+"speed": 20.0
 }, {
-"frames": [ ExtResource( 23 ), ExtResource( 25 ), ExtResource( 21 ), ExtResource( 24 ), ExtResource( 26 ), ExtResource( 20 ), ExtResource( 22 ) ],
+"frames": [ ExtResource( 23 ), ExtResource( 25 ), ExtResource( 21 ), ExtResource( 24 ), ExtResource( 26 ), ExtResource( 20 ), ExtResource( 22 ), null ],
 "loop": true,
 "name": "vdashWindBack",
-"speed": 35.0
+"speed": 20.0
+}, {
+"frames": [ ExtResource( 27 ), ExtResource( 28 ), ExtResource( 29 ), ExtResource( 30 ) ],
+"loop": true,
+"name": "wind",
+"speed": 12.0
 } ]
 
 [node name="AnimatedSprite" type="AnimatedSprite"]
-position = Vector2( -1, 0 )
 frames = SubResource( 1 )
-animation = "vdashWindBack"
+animation = "wind"
+playing = true
 script = ExtResource( 12 )
 
 [connection signal="animation_finished" from="." to="." method="animation_finished"]
