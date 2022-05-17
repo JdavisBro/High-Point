@@ -4,9 +4,13 @@ class_name Player
 
 # To Dos/Ideas
 #
-# FOR CONTROLLER either:
+# - FOR CONTROLLER either:
+# cycle through this with L and R -- current
 # assign a button to each skill and pressing that button switches and activates the skill
 # allow the user to set an order and they press a button to go through that order
+# - death animation
+# - character jump animation that is good? (how)
+# - try to find cause of switching lag on web
 
 # Physics
 var acceleration = 200 # per sec
@@ -18,22 +22,23 @@ var speed_default = 125
 var speed = speed_default # cap
 var jump_impulse = 200
 
-
 var velocity = Vector2()
 
-var peak = 0
+var peak = 0 # Height peak this air time.
 var jumping = false
-var slid = false
-
-var frames = 0
-var disablePlaying = false
-var movementEnabled = true
+var slid = false # Already used move_and_slide in a skill or smth
 
 # Other
 
+var frames = 0
 var victimer = 0
-var rng = RandomNumberGenerator.new()
+var dying = 0.0
+
+var disablePlaying = false
+var movementEnabled = true
 var DEBUG_SQUISH = true
+
+var rng = RandomNumberGenerator.new()
 
 # Skills
 var skill = null
@@ -41,7 +46,6 @@ var activeSkill = null
 
 # Skill Related
 var pogoing = false # Pogo
-
 
 # Node Refs
 onready var sprite: AnimatedSprite = $AnimatedSprite
@@ -68,6 +72,7 @@ const SQUASH_FORWARD = 0b10000
 # Setup Func!!
 
 func setup():
+	Globals.player = self
 	Engine.time_scale = 1
 	for i in range(len(Globals.characters)):
 		Globals.characters[i] = Globals.characters[i].new(self)
@@ -84,6 +89,10 @@ func _animation_finished():
 # Game calls
 
 func _physics_process(delta):
+	if dying:
+		do_dying(delta)
+		return
+	
 	frames += 1
 	
 	rng.randomize()
@@ -105,7 +114,7 @@ func _physics_process(delta):
 	
 	move()
 
-	check_collisions()
+	check_collisions(delta)
 	
 	if trail.emitting:
 		do_trail()
@@ -150,10 +159,22 @@ func get_input(delta):
 		Globals.selected = 2
 	elif Input.is_action_just_pressed("char4"):
 		Globals.selected = 3
+	elif Input.is_action_just_pressed("up_char"):
+		Globals.selected += 1
+		if len(Globals.characters) <= Globals.selected:
+			Globals.selected = 0
+	elif Input.is_action_just_pressed("down_char"):
+		Globals.selected -= 1
+		if 0 > Globals.selected:
+			Globals.selected = len(Globals.characters) - 1
 		
 	if len(Globals.characters) <= Globals.selected:
 		Globals.selected = len(Globals.characters) - 1
 		
+	if Globals.selected != previousSel and not activeSkill:
+		if skill.has_method("swapped"):
+			skill.swapped()
+	
 	skill = Globals.characters[Globals.selected]
 	
 	if Globals.selected != previousSel and not activeSkill:
@@ -206,6 +227,7 @@ func do_movement_inputs(delta):
 		jumping = true
 		jump_buffer = 0
 		floor_buffer = 0
+		pogoing = false
 		squash(0.8,1.2)
 	elif Input.is_action_just_pressed("jump"):
 		jump_buffer = BUFFER_DEFAULT
@@ -251,7 +273,7 @@ func debug(_delta):
 		dir ^= SQUASH_DOWN
 	else:
 		y = 1
-	if dir and not tween.is_active() and DEBUG_SQUISH:
+	if dir and not tween.is_active() and DEBUG_SQUISH and not Input.is_joy_known(0):
 		squash(x, y, 0.05, 0.3, dir)
 
 	if Input.is_action_just_pressed("DEBUG_toggle_inf_charge"):
@@ -307,11 +329,11 @@ func move():
 				else:
 					sprite.speed_scale = abs(0.008*velocity.x)
 
-func check_collisions():
+func check_collisions(_delta):
 	for i in get_slide_count():
 		var collider = get_slide_collision(i).collider
 		if collider.get_collision_layer_bit(2) or collider.get_collision_layer_bit(3): # Kill Planes & enemies
-			var _err = get_tree().reload_current_scene()
+			die(collider)
 		elif collider.get_collision_layer_bit(4): # victory flag
 			disablePlaying = true
 			Engine.time_scale = 1
@@ -330,6 +352,11 @@ func do_trail():
 			tex.create_from_image(im, 0)
 	trail.texture = tex
 	trail.position = sprite.position
+
+func do_dying(delta):
+	dying += delta
+	if dying > 0.2:
+		var _err = get_tree().reload_current_scene()
 
 # Called elsewhere
 
@@ -360,6 +387,17 @@ func make_smoke(pos, deg):
 	anim.rotate_speed = deg
 	anim.behind()
 	return anim
+
+func die(collider):
+	Engine.time_scale = 0.4
+	dying = 0.01
+	Input.start_joy_vibration(0, 1, 1, 0.10)
+	if collider.get_collision_layer_bit(3):
+		var _err = tween.interpolate_property(sprite, "modulate:a", 1.0, 0.0, 0.10, tween.TRANS_CIRC)
+		squash(1, 0, 0.1, 0.3, SQUASH_DOWN)
+	else:
+		var _err = tween.interpolate_property(self, "position:y", position.y, position.y + 80, 0.10)
+		_err = tween.start()
 
 func skill_end():
 	update_asset(skill.asset, skill.effects)

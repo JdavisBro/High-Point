@@ -43,6 +43,7 @@ func do_charges(i,charges):
 			Globals.characters[i].charges.append(charge)
 
 func setup_emblems():
+	var enddone = false
 	for i in range(4):
 		
 		if len(Globals.characters) > i:
@@ -51,6 +52,13 @@ func setup_emblems():
 			do_charges(i, character.charge)
 			powers[i].visible = true
 		else:
+			if not enddone:
+				if i == 1:
+					$Left.visible = false
+					$Right.visible = false
+				else:
+					$Right.rect_position.x = 74*i+1
+				enddone = true
 			powers[i].visible = false
 
 func order():

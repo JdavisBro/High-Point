@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/ControllerButtonUI.gd" type="Script" id=1]
+
+[node name="ControllerButton" type="TextureRect" groups=["controllerbuttons"]]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PSOver" type="TextureRect" parent="."]
+__meta__ = {
+"_edit_use_anchors_": false
+}

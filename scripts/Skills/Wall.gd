@@ -30,6 +30,7 @@ func passive(delta):
 			player.jumping = false
 			if player.gravityMult > 0.2:
 				player.gravityMult = 0.2
+				player.velocity.y = 20
 		wall_buffer = Player.BUFFER_DEFAULT
 		buffer_left = player.get_slide_collision(0).normal.x < 0
 	elif player.gravityMult == 0.2:
@@ -48,3 +49,6 @@ func passive(delta):
 			player.jump_buffer = 0.0
 			player.jumping = true
 			player.squash(0.7,1.4)
+
+func swapped():
+	player.gravityMult = 1.0
