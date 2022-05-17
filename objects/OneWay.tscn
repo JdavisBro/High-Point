@@ -32,7 +32,6 @@ script = ExtResource( 5 )
 
 [node name="Im" type="AnimatedSprite" parent="Ims"]
 frames = SubResource( 1 )
-frame = 2
 playing = true
 centered = false
 
