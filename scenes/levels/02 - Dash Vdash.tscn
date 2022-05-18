@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scenes/LevelDefault.tscn" type="PackedScene" id=1]
-[ext_resource path="res://objects/ControllerButton.tscn" type="PackedScene" id=2]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
@@ -28,7 +27,3 @@ tile_data = PoolIntArray( -720917, 0, 3, -786412, 0, 3, -655381, 0, 65538, -7208
 [node name="VictoryFlag" parent="." index="9"]
 position = Vector2( 114, -48 )
 frame = 0
-
-[node name="dolphinemulator" parent="." index="10" instance=ExtResource( 2 )]
-position = Vector2( -46, -12 )
-action = "hbdfpogdfiougbj"
