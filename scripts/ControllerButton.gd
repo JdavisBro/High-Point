@@ -1,6 +1,5 @@
 extends Sprite
 
-
 export var action = "jump"
 export var key_overide = ""
 export var joy_overide = ""
@@ -26,7 +25,6 @@ func _process(_delta):
 	dist = dist - transparency_smooth
 	if dist < transparency_distance:
 		modulate.a = min((transparency_distance - dist) / transparency_distance, 1)
-		print(modulate.a*100)
 	else:
 		modulate.a = 0
 
