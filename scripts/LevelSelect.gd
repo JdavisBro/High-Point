@@ -11,7 +11,8 @@ func make_button(name, selected):
 	$GridContainer.add_child(button)
 	if selected or name == Globals.last_level:
 		focus_me = button
-		$Back/Button.focus_neighbour_bottom = button.get_node("Button").get_path()
+		if selected:
+			$Back/Button.focus_neighbour_bottom = button.get_node("Button").get_path()
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
@@ -33,3 +34,7 @@ func button_pressed(button):
 
 func _on_Back_pressed_button(_button):
 	get_node("..").toggle_select()
+
+func _process(_delta):
+	if visible and Input.is_action_just_pressed("ui_cancel"):
+		get_node("..").toggle_select()

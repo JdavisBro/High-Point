@@ -1,6 +1,12 @@
 extends Node2D
 
+var CONTROLLER_TEST = false
+
+var CONTROLLER_TEST_TYPE = "ps" # "xbox"
+
 var DEBUG_INF_CHARGE = false
+
+var do_focus = false
 
 var characters = []
 
@@ -19,6 +25,19 @@ var player = null
 func _process(_delta): # Global inputs go here
 	if Input.is_action_just_pressed("fullscreen"):
 		OS.window_fullscreen = !OS.window_fullscreen
+	if Input.is_action_just_pressed("DEBUG_toggle_controller_test"):
+		if CONTROLLER_TEST:
+			if CONTROLLER_TEST_TYPE == "ps":
+				CONTROLLER_TEST_TYPE = "xbox"
+				print("CONTROLLER_TEST: "+str(CONTROLLER_TEST)+" - TYPE: "+str(CONTROLLER_TEST_TYPE))
+			else:
+				CONTROLLER_TEST_TYPE = "ps"
+				CONTROLLER_TEST = false
+				print("CONTROLLER_TEST: "+str(CONTROLLER_TEST))
+		else:
+			CONTROLLER_TEST = true
+			print("CONTROLLER_TEST: "+str(CONTROLLER_TEST)+" - TYPE: "+str(CONTROLLER_TEST_TYPE))
+		get_tree().call_group("controllerbuttons", "set_button")
 	input()
 
 func get_ui_input(axis, previous, action, ie):
@@ -57,6 +76,7 @@ func _ready():
 	var _err = Input.connect("joy_connection_changed", self, "_joy_connection_changed")
 	if Input.is_joy_known(0):
 		print("Controller " + "0, " + Input.get_joy_name(0) + " connected")
+		do_focus = true
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 
 func _joy_connection_changed(deviceid, connected):
@@ -70,10 +90,12 @@ func _joy_connection_changed(deviceid, connected):
 	get_tree().call_group("controllerbuttons", "set_button")
 
 func set_button(node):
-	assert(InputMap.has_action(node.action))
+	if node.action != "" and not InputMap.has_action(node.action):
+		printerr("Action "+node.action+" not found in node "+node.name+" ("+node.get_path()+")")
+		return
 	node.get_node("PSOver").texture = null
 	var index = 0
-	if Input.is_joy_known(0): # Controller
+	if Input.is_joy_known(0) or CONTROLLER_TEST: # Controller
 		if not node.joy_overide:
 			for i in InputMap.get_action_list(node.action):
 				if i is InputEventJoypadButton:
@@ -84,13 +106,13 @@ func set_button(node):
 				node.texture = null
 				return
 			index = node.joy_overide
-		if Input.get_joy_name(0) == "PS4 Controller":
+		if Input.get_joy_name(0) == "PS4 Controller" or CONTROLLER_TEST_TYPE == "ps":
 			node.texture = load("res://images/keys/playstation/" + str(index) + ".tres")
 			if ResourceLoader.exists("res://images/keys/playstation/" + str(index) + "_1" + ".tres"):
 				node.get_node("PSOver").texture = load("res://images/keys/playstation/" + str(index) + "_1" + ".tres")
 		else: # Default to Xbox
 			node.texture = load("res://images/keys/xbox/" + str(index) + ".tres")
-	else:
+	else: # Keyboard
 		if not node.key_overide:
 			for i in InputMap.get_action_list(node.action):
 				if i is InputEventKey:

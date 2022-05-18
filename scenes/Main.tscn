@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://objects/PixelButton.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/LevelSelect.tscn" type="PackedScene" id=2]
@@ -6,6 +6,10 @@
 [ext_resource path="res://images/title.png" type="Texture" id=4]
 [ext_resource path="res://fonts/DejaVuSans.ttf" type="DynamicFontData" id=5]
 [ext_resource path="res://scripts/Title.gd" type="Script" id=6]
+[ext_resource path="res://objects/ControllerButtonUI.tscn" type="PackedScene" id=7]
+[ext_resource path="res://images/clouds/0.png" type="Texture" id=8]
+[ext_resource path="res://images/clouds/1.png" type="Texture" id=9]
+[ext_resource path="res://scripts/Cloud.gd" type="Script" id=10]
 
 [sub_resource type="DynamicFont" id=1]
 size = 72
@@ -18,8 +22,6 @@ font_data = ExtResource( 5 )
 [node name="Main" type="Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -3.0
-margin_right = -3.0
 theme = ExtResource( 3 )
 script = ExtResource( 6 )
 __meta__ = {
@@ -31,6 +33,32 @@ margin_right = 1024.0
 margin_bottom = 576.0
 texture = ExtResource( 4 )
 expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Clouds" type="TextureRect" parent="."]
+modulate = Color( 1, 1, 1, 0.647059 )
+margin_left = 5.0
+margin_top = -52.0
+margin_right = 1029.0
+margin_bottom = 336.0
+texture = ExtResource( 8 )
+expand = true
+script = ExtResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Clouds2" type="TextureRect" parent="."]
+modulate = Color( 1, 1, 1, 0.647059 )
+margin_left = -945.0
+margin_top = -8.0
+margin_right = 79.0
+margin_bottom = 299.0
+texture = ExtResource( 9 )
+expand = true
+script = ExtResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -75,9 +103,9 @@ anchor_top = 0.699653
 anchor_right = 0.453711
 anchor_bottom = 0.840653
 margin_left = 298.852
-margin_top = 375.014
+margin_top = 369.014
 margin_right = 446.852
-margin_bottom = 450.374
+margin_bottom = 444.374
 text = "Level Select"
 
 [node name="Options" parent="TitleButtons" instance=ExtResource( 1 )]
@@ -86,11 +114,34 @@ anchor_top = 0.699653
 anchor_right = 0.685156
 anchor_bottom = 0.840653
 margin_left = 526.594
-margin_top = 375.014
+margin_top = 369.014
 margin_right = 674.594
-margin_bottom = 450.374
+margin_bottom = 444.374
 text = "Options (soon)"
+
+[node name="Exit" parent="TitleButtons" instance=ExtResource( 1 )]
+anchor_left = 0.535156
+anchor_top = 0.699653
+anchor_right = 0.685156
+anchor_bottom = 0.840653
+margin_left = 410.594
+margin_top = 461.014
+margin_right = 558.594
+margin_bottom = 536.374
+focus_neighbour_left = NodePath("../LevelSel")
+focus_neighbour_right = NodePath("../Options")
+text = "Exit"
+
+[node name="ControllerButton" parent="TitleButtons" instance=ExtResource( 7 )]
+margin_left = 474.0
+margin_top = 408.0
+margin_right = 538.0
+margin_bottom = 472.0
+action = "ui_left"
+key_overide = "Directions"
+joy_overide = "dpad"
 
 [connection signal="pressed_button" from="TitleButtons/Start" to="." method="_on_Start_pressed_button"]
 [connection signal="pressed_button" from="TitleButtons/LevelSel" to="." method="_on_LevelSel_pressed_button"]
 [connection signal="pressed_button" from="TitleButtons/Options" to="." method="_on_Options_pressed_button"]
+[connection signal="pressed_button" from="TitleButtons/Exit" to="." method="_on_Exit_pressed_button"]

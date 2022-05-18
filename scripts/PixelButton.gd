@@ -22,6 +22,14 @@ func get_text():
 
 func _ready():
 	label.text = text
+	if focus_neighbour_left:
+		button.focus_neighbour_left = get_node(focus_neighbour_left).get_path()
+	if focus_neighbour_right:
+		button.focus_neighbour_right = get_node(focus_neighbour_right).get_path()
+	if focus_neighbour_top:
+		button.focus_neighbour_top = get_node(focus_neighbour_top).get_path()
+	if focus_neighbour_bottom:
+		button.focus_neighbour_bottom = get_node(focus_neighbour_bottom).get_path()
 
 func _on_Button_pressed():
 	emit_signal("pressed_button", self)
