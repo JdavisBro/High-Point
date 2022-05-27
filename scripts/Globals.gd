@@ -91,7 +91,7 @@ func _joy_connection_changed(deviceid, connected):
 
 func set_button(node):
 	if node.action != "" and not InputMap.has_action(node.action):
-		printerr("Action "+node.action+" not found in node "+node.name+" ("+node.get_path()+")")
+		push_error("Action '"+node.action+"' not found in node "+node.name+" ("+node.get_path()+")")
 		return
 	node.get_node("PSOver").texture = null
 	var index = 0
@@ -106,7 +106,7 @@ func set_button(node):
 				node.texture = null
 				return
 			index = node.joy_overide
-		if Input.get_joy_name(0) == "PS4 Controller" or CONTROLLER_TEST_TYPE == "ps":
+		if Input.get_joy_name(0) == "PS4 Controller" or (CONTROLLER_TEST and CONTROLLER_TEST_TYPE == "ps"):
 			node.texture = load("res://images/keys/playstation/" + str(index) + ".tres")
 			if ResourceLoader.exists("res://images/keys/playstation/" + str(index) + "_1" + ".tres"):
 				node.get_node("PSOver").texture = load("res://images/keys/playstation/" + str(index) + "_1" + ".tres")

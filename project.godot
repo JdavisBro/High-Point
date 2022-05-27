@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "AnimatedSprite",
+"class": "Actor",
+"language": "GDScript",
+"path": "res://scripts/Actor.gd"
+}, {
 "base": "Reference",
 "class": "Dash",
 "language": "GDScript",
@@ -60,6 +65,7 @@ _global_script_classes=[ {
 "path": "res://scripts/Skills/Wall.gd"
 } ]
 _global_script_class_icons={
+"Actor": "",
 "Dash": "",
 "Grapple": "",
 "PixelButton": "",
@@ -74,7 +80,8 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Test"
+config/name="High Point"
+config/description="Second FMP"
 run/main_scene="res://scenes/Main.tscn"
 config/icon="res://icon.png"
 
