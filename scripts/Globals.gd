@@ -14,6 +14,8 @@ var selected = 0
 
 var last_level = null
 
+var level_select = false
+
 var mobile = OS.get_name() in ["iOS", "Android"]
 
 var stick_ui_threshold = 0.1

@@ -1,0 +1,8 @@
+[gd_scene format=2]
+
+[node name="Cutscene" type="Node2D"]
+process_priority = 1
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.31, 0.31 )

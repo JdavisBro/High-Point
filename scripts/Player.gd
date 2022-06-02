@@ -123,6 +123,7 @@ func _physics_process(delta):
 		victimer += delta
 		get_node("../RichTextLabel").text = "nice dub boss - " + str(round((1-victimer)*100)/100)
 		if victimer >= 1:
+			Globals.level_select = true
 			var _err = get_tree().change_scene("res://scenes/Main.tscn")
 
 # Called in process
@@ -141,6 +142,7 @@ func check_buffers(delta):
 
 func get_input(delta):
 	if Input.is_action_just_pressed("title"):
+		Globals.level_select = true
 		var _err = get_tree().change_scene("res://scenes/Main.tscn")
 
 	if jumping and is_on_floor():

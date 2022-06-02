@@ -31,3 +31,4 @@ tile_data = PoolIntArray( -851960, 0, 2, -851959, 0, 196610, -851958, 0, 196610,
 
 [node name="VictoryFlag" parent="." index="9"]
 position = Vector2( 50, -64 )
+frame = 1
